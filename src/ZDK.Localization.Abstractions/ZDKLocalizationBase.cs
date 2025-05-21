@@ -9,8 +9,8 @@ namespace ZDK.Localization.Abstractions;
 /// </summary>
 public abstract class ZDKLocalizationBase : IZDKLocalization
 {
+	protected ILogger<ZDKLocalizationBase> Logger { get; }
 	protected readonly IZDKLocalizationConfiguration Configuration;
-	private readonly ILogger<ZDKLocalizationBase> _logger;
 
 	private IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> _localizationData = new Dictionary<string, IReadOnlyDictionary<string, string>>();
 	private readonly ReaderWriterLockSlim _dataLock = new();
@@ -29,7 +29,7 @@ public abstract class ZDKLocalizationBase : IZDKLocalization
 			_dataLock.EnterWriteLock();
 			try {
 				_localizationData = value ?? throw new ArgumentNullException(nameof(value));
-				_logger.LogInformation("Localization data updated"); // Log the update
+				Logger.LogInformation("Localization data updated"); // Log the update
 			}
 			finally {
 				_dataLock.ExitWriteLock();
@@ -44,8 +44,8 @@ public abstract class ZDKLocalizationBase : IZDKLocalization
 
 	protected ZDKLocalizationBase(IZDKLocalizationConfiguration localizationConfiguration,
 	                              ILogger<ZDKLocalizationBase> logger) {
+		Logger = logger;
 		Configuration = localizationConfiguration ?? throw new ArgumentNullException(nameof(localizationConfiguration));
-		_logger = logger;
 	}
 
 	private string HandleMissingKey(string key, CultureInfo cultureInfo) {
@@ -53,19 +53,19 @@ public abstract class ZDKLocalizationBase : IZDKLocalization
 
 		switch (handlingMethod) {
 			case ZDKMissingLocalizationKeyHandleMethod.ReturnEmptyString:
-				_logger.LogWarning("Localization key '{Key}' not found for culture '{CultureName}'. Handling method: ReturnEmptyString", key, cultureInfo.Name);
+				Logger.LogWarning("Localization key '{Key}' not found for culture '{CultureName}'. Handling method: ReturnEmptyString", key, cultureInfo.Name);
 				return string.Empty;
 
 			case ZDKMissingLocalizationKeyHandleMethod.ReturnKey:
-				_logger.LogWarning("Localization key '{Key}' not found for culture '{CultureName}'. Handling method: ReturnKey", key, cultureInfo.Name);
+				Logger.LogWarning("Localization key '{Key}' not found for culture '{CultureName}'. Handling method: ReturnKey", key, cultureInfo.Name);
 				return key;
 
 			case ZDKMissingLocalizationKeyHandleMethod.ThrowException:
-				_logger.LogError("Localization key '{Key}' not found for culture '{CultureName}'. Handling method: ThrowException", key, cultureInfo.Name);
+				Logger.LogError("Localization key '{Key}' not found for culture '{CultureName}'. Handling method: ThrowException", key, cultureInfo.Name);
 				throw new ZDKMissingLocalizationKeyException(key, cultureInfo.Name);
 
 			default:
-				_logger.LogError("Unknown MissingLocalizationKeyHandleMethod: {Method}. Falling back to ReturnKey", handlingMethod);
+				Logger.LogError("Unknown MissingLocalizationKeyHandleMethod: {Method}. Falling back to ReturnKey", handlingMethod);
 				return key;
 		}
 	}
@@ -85,8 +85,8 @@ public abstract class ZDKLocalizationBase : IZDKLocalization
 				if (localizedStrings.TryGetValue(Configuration.DefaultCulture.Name, out localizedString))
 					return localizedString;
 
-				_logger.LogWarning("Localization key '{Key}' found, but no translation available for culture '{CultureName}', parent culture '{ParentCultureName}', or default culture '{DefaultCultureName}'",
-				                   key, cultureInfo.Name, cultureInfo.Parent.Name, Configuration.DefaultCulture?.Name ?? "None");
+				Logger.LogWarning("Localization key '{Key}' found, but no translation available for culture '{CultureName}', parent culture '{ParentCultureName}', or default culture '{DefaultCultureName}'",
+				                  key, cultureInfo.Name, cultureInfo.Parent.Name, Configuration.DefaultCulture?.Name ?? "None");
 				return null;
 			}
 		}
@@ -94,7 +94,7 @@ public abstract class ZDKLocalizationBase : IZDKLocalization
 			_dataLock.ExitReadLock();
 		}
 
-		_logger.LogWarning("Localization key '{Key}' not found in localization data", key);
+		Logger.LogWarning("Localization key '{Key}' not found in localization data", key);
 		return null;
 	}
 
@@ -143,8 +143,8 @@ public abstract class ZDKLocalizationBase : IZDKLocalization
 			return string.Format(localizedString, resolvedArgs);
 		}
 		catch (FormatException ex) {
-			_logger.LogError(ex, "Error formatting localized string for key '{Key}' with culture '{CultureName}'. Format string: '{FormatString}'. Arguments: {Args}",
-			                 key, CultureInfo.CurrentUICulture.Name, localizedString, resolvedArgs);
+			Logger.LogError(ex, "Error formatting localized string for key '{Key}' with culture '{CultureName}'. Format string: '{FormatString}'. Arguments: {Args}",
+			                key, CultureInfo.CurrentUICulture.Name, localizedString, resolvedArgs);
 			return localizedString; 
 		}
 	}
@@ -156,8 +156,8 @@ public abstract class ZDKLocalizationBase : IZDKLocalization
 			return string.Format(localizedString, resolvedArgs);
 		}
 		catch (FormatException ex) {
-			_logger.LogError(ex, "Error formatting localized string for key '{Key}' with culture '{CultureName}'. Format string: '{FormatString}'. Arguments: {Args}",
-			                 key, cultureInfo.Name, localizedString, resolvedArgs);
+			Logger.LogError(ex, "Error formatting localized string for key '{Key}' with culture '{CultureName}'. Format string: '{FormatString}'. Arguments: {Args}",
+			                key, cultureInfo.Name, localizedString, resolvedArgs);
 			return localizedString;
 		}
 	}

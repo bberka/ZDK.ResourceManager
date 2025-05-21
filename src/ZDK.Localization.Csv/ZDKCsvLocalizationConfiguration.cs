@@ -8,7 +8,6 @@ namespace ZDK.Localization.Csv;
 /// </summary>
 public class ZDKCsvLocalizationConfiguration : IZDKLocalizationConfiguration
 {
-	
 	/// <summary>
 	///  Specifies the path to the CSV file containing localization data.
 	/// </summary>
@@ -33,15 +32,15 @@ public class ZDKCsvLocalizationConfiguration : IZDKLocalizationConfiguration
 	/// Reloads the localization data when the file changes. Default is true.
 	/// </summary>
 	public bool ReloadOnFileChange { get; init; } = true;
-	
+
 	/// <summary>
 	/// Reloads the localization data when the file changes. Default is SingleFileWithAllCultures
 	/// </summary>
 	public ZDKCsvLocalizationReadMethod ReadMethod { get; init; } = ZDKCsvLocalizationReadMethod.SingleFileWithAllCultures;
-	
+
 	/// <summary>
 	/// Gets the separator character used in the CSV file(s).
 	/// Common values are ',' and ';' and '\t'. Default is ','.
 	/// </summary>
-	public char Separator { get; init;} = ',';
+	public char Separator { get; init; } = ',';
 }

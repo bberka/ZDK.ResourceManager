@@ -24,9 +24,8 @@ public class ZDKFileSystemResourceWatcher : IZDKResourceFileWatcher
 	/// Starts watching the specified directory path for resource file changes.
 	/// </summary>
 	/// <param name="source">The directory path to watch.</param>
-	public void StartWatching(string source)
-	{
-		if (_watcher != null) StopWatching(); 
+	public void StartWatching(string source) {
+		if (_watcher != null) StopWatching();
 
 		var directoryPath = source;
 
@@ -38,8 +37,8 @@ public class ZDKFileSystemResourceWatcher : IZDKResourceFileWatcher
 
 			_watcher = new FileSystemWatcher(directoryPath) {
 				NotifyFilter = NotifyFilters.FileName | NotifyFilters.DirectoryName | NotifyFilters.LastWrite | NotifyFilters.CreationTime | NotifyFilters.Size,
-				IncludeSubdirectories = true, 
-				EnableRaisingEvents = true 
+				IncludeSubdirectories = true,
+				EnableRaisingEvents = true
 			};
 
 			_watcher.Created += (s, e) => ResourceChanged?.Invoke(this, e);
@@ -52,7 +51,7 @@ public class ZDKFileSystemResourceWatcher : IZDKResourceFileWatcher
 		}
 		catch (Exception ex) {
 			_logger.LogError(ex, "Error starting file watcher for directory {DirectoryPath}. Automatic reloading disabled", directoryPath);
-			_watcher = null; 
+			_watcher = null;
 		}
 	}
 

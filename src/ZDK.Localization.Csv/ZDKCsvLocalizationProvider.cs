@@ -14,8 +14,7 @@ public class ZDKCsvLocalizationProvider : IZDKLocalizationProvider
 
 	public ZDKCsvLocalizationProvider(
 		ILogger<ZDKCsvLocalizationProvider> logger,
-		ZDKCsvLocalizationConfiguration configuration) 
-	{
+		ZDKCsvLocalizationConfiguration configuration) {
 		_logger = logger;
 		_configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 	}
@@ -107,7 +106,7 @@ public class ZDKCsvLocalizationProvider : IZDKLocalizationProvider
 	// Private method to load from multiple files, each with one culture
 	private IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> LoadFromMultipleFiles() {
 		var localizationKeys = new Dictionary<string, Dictionary<string, string>>();
-		var baseDirectory = _configuration.SourcePath; 
+		var baseDirectory = _configuration.SourcePath;
 		var separator = _configuration.Separator;
 
 		_logger.LogInformation("Attempting to load localization from multiple CSV files in directory: {Directory} with separator '{Separator}'", baseDirectory, separator);
@@ -193,5 +192,4 @@ public class ZDKCsvLocalizationProvider : IZDKLocalizationProvider
 		                                                                                                                        )
 		                                    );
 	}
-
 }

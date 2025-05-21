@@ -38,7 +38,7 @@ public sealed class ZDKFileSystemResourceFile : IZDKResourceFile
 			return new FileStream(FileUri, FileMode.Open, FileAccess.Read, FileShare.Read);
 		}
 		catch (FileNotFoundException) {
-			throw; 
+			throw;
 		}
 		catch (IOException ex) {
 			throw new ResourceFileAccessException($"Error accessing file stream for '{FileUri}'.", ex);

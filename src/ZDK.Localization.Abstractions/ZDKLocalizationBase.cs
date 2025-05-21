@@ -137,7 +137,7 @@ public abstract class ZDKLocalizationBase : IZDKLocalization
 
 
 	public string GetString(string key, params object[] args) {
-		var localizedString = GetString(key); 
+		var localizedString = GetString(key);
 		var resolvedArgs = ResolveLocalizationArgs(args);
 		try {
 			return string.Format(localizedString, resolvedArgs);
@@ -145,12 +145,12 @@ public abstract class ZDKLocalizationBase : IZDKLocalization
 		catch (FormatException ex) {
 			Logger.LogError(ex, "Error formatting localized string for key '{Key}' with culture '{CultureName}'. Format string: '{FormatString}'. Arguments: {Args}",
 			                key, CultureInfo.CurrentUICulture.Name, localizedString, resolvedArgs);
-			return localizedString; 
+			return localizedString;
 		}
 	}
 
 	public string GetString(string key, CultureInfo cultureInfo, params object[] args) {
-		var localizedString = GetString(key, cultureInfo); 
+		var localizedString = GetString(key, cultureInfo);
 		var resolvedArgs = ResolveLocalizationArgs(args);
 		try {
 			return string.Format(localizedString, resolvedArgs);

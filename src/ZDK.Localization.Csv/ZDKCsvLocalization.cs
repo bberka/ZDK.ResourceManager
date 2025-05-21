@@ -12,10 +12,9 @@ public class ZDKCsvLocalization : ZDKLocalizationBase
 	public ZDKCsvLocalization(
 		ZDKCsvLocalizationConfiguration localizationConfiguration,
 		IZDKLocalizationProvider localizationProvider,
-		ILogger<ZDKCsvLocalization> logger) 
-		: base(localizationConfiguration, logger)
-	{
-		_csvConfiguration = localizationConfiguration; 
+		ILogger<ZDKCsvLocalization> logger)
+		: base(localizationConfiguration, logger) {
+		_csvConfiguration = localizationConfiguration;
 		_localizationProvider = localizationProvider;
 
 		ReloadLocalizationData();
@@ -55,7 +54,7 @@ public class ZDKCsvLocalization : ZDKLocalizationBase
 		try {
 			_csvWatcher = new FileSystemWatcher(directoryPath, fileName) {
 				NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
-				EnableRaisingEvents = true 
+				EnableRaisingEvents = true
 			};
 
 			_csvWatcher.Changed += OnCsvFileChanged;

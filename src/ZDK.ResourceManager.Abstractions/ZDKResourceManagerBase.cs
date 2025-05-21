@@ -48,11 +48,10 @@ public abstract class ZDKResourceManagerBase : IZDKResourceFileManager
 		IZDKResourceFileProvider resourceProvider,
 		IZDKResourceConfiguration configuration,
 		IZDKResourceFileWatcher? watcher,
-		ILogger logger) 
-	{
+		ILogger logger) {
 		ResourceProvider = resourceProvider ?? throw new ArgumentNullException(nameof(resourceProvider));
 		Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-		Watcher = watcher; 
+		Watcher = watcher;
 		Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
 		if (Watcher != null) {
@@ -64,6 +63,7 @@ public abstract class ZDKResourceManagerBase : IZDKResourceFileManager
 			Logger.LogInformation("No resource file watcher provided. Automatic resource file reloading is disabled");
 		}
 	}
+
 	protected void ReloadResourceFiles(string source) // Needs the source to load from
 	{
 		Logger.LogInformation("Initiating resource file data reload from source: {Source}", source);

@@ -3,7 +3,7 @@ namespace ZDK.ResourceManager.Abstractions;
 /// <summary>
 /// Exception thrown when an error occurs while accessing the content of a resource file.
 /// </summary>
-[Serializable] 
+[Serializable]
 public class ResourceFileAccessException : Exception
 {
 	/// <summary>
@@ -25,5 +25,4 @@ public class ResourceFileAccessException : Exception
 	/// <param name="innerException">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
 	public ResourceFileAccessException(string message, Exception innerException)
 		: base(message, innerException) { }
-
 }

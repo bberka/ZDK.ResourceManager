@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Logging; 
+using Microsoft.Extensions.Logging;
 using ZDK.ResourceManager.Abstractions;
 
 namespace ZDK.ResourceManager.FileSystem;

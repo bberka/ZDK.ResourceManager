@@ -21,7 +21,7 @@ public static class ZDKFileSystemResourceExtensions
 
 		services.AddSingleton(configuration);
 		services.AddSingleton<IZDKResourceConfiguration>(configuration);
-		
+
 		services.AddSingleton<IZDKResourceFileProvider, ZDKFileSystemResourceProvider>();
 		if (configuration.ReloadOnFileChange) {
 			services.AddSingleton<IZDKResourceFileWatcher, ZDKFileSystemResourceWatcher>();

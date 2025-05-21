@@ -6,8 +6,7 @@ namespace ZDK.ResourceManager.FileSystem;
 /// <summary>
 /// Watches the file system for resource file changes.
 /// </summary>
-public class ZDKFileSystemResourceWatcher : IZDKResourceFileWatcher,
-                                            IDisposable
+public class ZDKFileSystemResourceWatcher : IZDKResourceFileWatcher
 {
 	private readonly ILogger<ZDKFileSystemResourceWatcher> _logger;
 	private FileSystemWatcher? _watcher;

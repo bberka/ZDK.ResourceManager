@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace ZDK.Localization.Abstractions;
 
 /// <summary>

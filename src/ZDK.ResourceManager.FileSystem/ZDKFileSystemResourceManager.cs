@@ -9,8 +9,8 @@ public class ZDKFileSystemResourceManager : ZDKResourceManagerBase
 
 	public ZDKFileSystemResourceManager(
 		ZDKFileSystemResourceConfiguration configuration, 
-		ZDKFileSystemResourceProvider resourceProvider, 
-		ZDKFileSystemResourceWatcher? watcher, 
+		IZDKResourceFileProvider resourceProvider, 
+		IZDKResourceFileWatcher? watcher, 
 		ILogger<ZDKFileSystemResourceManager> logger)
 		: base(resourceProvider, configuration, watcher, logger) 
 	{

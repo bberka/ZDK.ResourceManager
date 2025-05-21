@@ -122,7 +122,7 @@ jobs:
           body_path: ${{ env.body_path }}
           append_body: false
           files: |
-            ./release-assets/ZDK.ResourceManager.Abstractions-nightly-${{ env.NIGHTLY_VERSION }}.zip
-            ./release-assets/ZDK.Localization.Abstractions-nightly-${{ env.NIGHTLY_VERSION }}.zip
-            ./release-assets/ZDK.Localization.Csv-nightly-${{ env.NIGHTLY_VERSION }}.zip
-            ./release-assets/ZDK.ResourceManager.FileSystem-nightly-${{ env.NIGHTLY_VERSION }}.zip
+            ./release-assets/ZDK.ResourceManager.Abstractions-${{ env.NIGHTLY_VERSION }}.zip
+            ./release-assets/ZDK.Localization.Abstractions-${{ env.NIGHTLY_VERSION }}.zip
+            ./release-assets/ZDK.Localization.Csv-${{ env.NIGHTLY_VERSION }}.zip
+            ./release-assets/ZDK.ResourceManager.FileSystem-${{ env.NIGHTLY_VERSION }}.zip

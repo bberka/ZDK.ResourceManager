@@ -192,11 +192,5 @@ public abstract class ZDKLocalizationBase : IZDKLocalization
 		GC.SuppressFinalize(this);
 	}
 
-	protected virtual void Dispose(bool disposing) {
-		// This method is for derived classes to override and clean up
-		// their specific disposable resources (like the watcher).
-		if (disposing) {
-			// Dispose managed resources here
-		}
-	}
+	protected abstract void Dispose(bool disposing);
 }

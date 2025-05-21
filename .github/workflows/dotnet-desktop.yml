@@ -61,13 +61,37 @@ jobs:
         id: custom_release_notes
         run: |
           echo "Generating custom release notes..."
-          echo "**Nightly Build Release Notes**" > release_notes.md
-          echo "Version: ${{ env.NIGHTLY_VERSION }}" >> release_notes.md
-          echo "Base Version: ${{ env.BASE_VERSION }}" >> release_notes.md
-          echo "Short SHA: ${{ env.SHORT_SHA }}" >> release_notes.md
-          echo "Changelog:" >> release_notes.md
-          echo "${{ steps.changelog.outputs.CHANGELOG_CONTENT }}" >> release_notes.md
-          echo "release_notes.md" >> $GITHUB_OUTPUT
+
+          # Get the latest tag (stable or nightly)
+          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+
+          # If no tags exist, use the initial commit as the starting point
+          if [ "$latest_tag" = "none" ]; then
+            echo "No previous tags found. Using initial commit."
+            start_ref=$(git rev-list --max-parents=0 HEAD)
+          else
+            echo "Latest tag found: $latest_tag"
+            start_ref=$latest_tag
+          fi
+
+          # Get the current commit
+          end_ref=$(git rev-parse HEAD)
+
+          # Generate the commit list
+          commit_list=$(git log --oneline $start_ref..$end_ref)
+
+          # Generate the GitHub compare link
+          repo_url="https://github.com/${{ github.repository }}"
+          compare_url="$repo_url/compare/$start_ref...$end_ref"
+
+          # Write the release notes to a file
+          echo "**Commits since last release ($start_ref):**" > release_notes.md
+          echo "$commit_list" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "**[Full Changelog]($compare_url)**" >> release_notes.md
+
+          # Output the path to the release notes file
+          echo "body_path=release_notes.md" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

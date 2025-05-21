@@ -1,15 +1,15 @@
-using System.Collections.Immutable;
-
 namespace ZDK.ResourceManager.Abstractions;
 
 /// <summary>
-/// Defines an interface for providing resource files and monitoring changes to those resources.
+/// Defines an interface for loading resource files from a source.
 /// </summary>
 public interface IZDKResourceFileProvider : IDisposable
 {
 	/// <summary>
-	///  Gets the resource files
+	/// Loads all resource files from the specified source using the provided configuration.
 	/// </summary>
-	/// <returns> A collection of resource files.</returns>
-	IImmutableSet<IZDKResourceFile> GetFiles();
+	/// <param name="source">The source string for the provider (e.g., directory path, connection string, bucket name).</param>
+	/// <param name="configuration">The resource configuration.</param>
+	/// <returns>A collection of resource files.</returns>
+	HashSet<IZDKResourceFile> LoadFiles(string source, IZDKResourceConfiguration configuration); // Changed method name to LoadFiles and parameters
 }

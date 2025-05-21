@@ -1,36 +1,45 @@
+// For Stream
+
+// For IDisposable?
+
 namespace ZDK.ResourceManager.Abstractions;
 
 /// <summary>
-///  Defines the contract for a resource file.
+/// Defines the contract for a resource file, abstracting its source location.
 /// </summary>
-public interface IZDKResourceFile
+public interface IZDKResourceFile : IDisposable // Resource streams should be disposable
 {
 	/// <summary>
-	/// Gets the  file path of the resource file. The value of this property is depends on the provider (e.g. it can be file system path or an url).
+	/// Gets the unique identifier or URI of the resource file.
+	/// The value of this property depends on the provider (e.g., file system path, URL, cloud storage key).
 	/// </summary>
-	public string FileUri { get; }
+	string FileUri { get; } // Renamed from FilePath for better generality
 
 	/// <summary>
-	///  Gets the file extension of the resource file.
-	///  </summary>
-	///  <returns>The file extension.</returns>
-	public string FileExtension { get; }
+	/// Gets the name of the resource file including its extension.
+	/// </summary>
+	string FileName { get; } // Good
 
 	/// <summary>
-	///  Gets the file name without extension.
-	///  </summary>
-	///  <returns>The file name without extension.</returns>
-	public string FileNameWithoutExtension { get; }
+	/// Gets the file extension of the resource file.
+	/// </summary>
+	string FileExtension { get; } // Good
 
 	/// <summary>
-	///  Gets the file name with extension.
-	///  </summary>
-	///  <returns>The file name with extension.</returns>
-	public string FileName { get; }
+	/// Gets the file name without extension.
+	/// </summary>
+	string FileNameWithoutExtension { get; } // Good
 
 	/// <summary>
-	///  Gets the stream of the resource file.
-	///  </summary>
-	///  <returns>The stream of the resource file.</returns>
-	public Stream GetStream();
+	/// Gets a read-only stream for the resource file's content.
+	/// It is the responsibility of the caller to dispose of the stream.
+	/// </summary>
+	/// <returns>A read-only stream of the resource file's content.</returns>
+	/// <exception cref="ResourceFileAccessException">Thrown if there's an error accessing the resource content.</exception> // Custom exception for access issues
+	Stream GetStream();
+
+	// Consider adding:
+	// long Size { get; } // File size
+	// DateTimeOffset LastModified { get; } // Last modified timestamp
+	// IReadOnlyDictionary<string, string> Metadata { get; } // Provider-specific metadata
 }

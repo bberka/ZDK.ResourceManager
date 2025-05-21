@@ -1,32 +1,33 @@
 namespace ZDK.ResourceManager.Abstractions;
 
 /// <summary>
-///  Defines the contract for watching resource files. The watcher detects file updates, deletions, and renames, providing events for responding to these changes.
+/// Defines the contract for a component that watches for changes in a resource source.
 /// </summary>
 public interface IZDKResourceFileWatcher : IDisposable
 {
 	/// <summary>
-	///  Notifies when a file system change occurs.
+	/// Event fired when a resource in the watched source is created, deleted, or changed.
 	/// </summary>
-	event EventHandler<FileSystemEventArgs> FileSystemChanged;
+	event EventHandler<FileSystemEventArgs> ResourceChanged; // Generic event name
 
 	/// <summary>
-	///  Notifies when a file system change occurs and the file is renamed.
+	/// Event fired when a resource in the watched source is renamed.
 	/// </summary>
-	event EventHandler<RenamedEventArgs> FileSystemRenamed;
+	event EventHandler<RenamedEventArgs> ResourceRenamed; // Generic event name
 
 	/// <summary>
-	///  Notifies when a file system change occurs and the file is deleted.
+	/// Event fired when an error occurs during the watching process.
 	/// </summary>
-	event EventHandler<ErrorEventArgs> WatcherError;
+	event EventHandler<ErrorEventArgs> WatcherError; // Good to keep
 
 	/// <summary>
-	///  Starts watching the resource files for changes.
+	/// Starts watching the specified source for changes.
 	/// </summary>
-	void StartWatching();
+	/// <param name="source">The source string to watch (e.g., directory path, connection string).</param>
+	void StartWatching(string source);
 
 	/// <summary>
-	///  Stops watching the resource files for changes.
+	/// Stops watching the resource source.
 	/// </summary>
 	void StopWatching();
 }

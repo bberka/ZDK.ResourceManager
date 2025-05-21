@@ -12,10 +12,19 @@
         <PackageTags>localization, localize, i18n, l10n, zdk, resource, manager, resources, file, system</PackageTags>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\ZDK.ResourceManager.Abstractions\ZDK.ResourceManager.Abstractions.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="..\..\LICENSE" Pack="true" PackagePath="\">
+            <Link>LICENSE</Link>
+        </Content>
+        <Content Include="..\..\README.md" Pack="true" PackagePath="\">
+            <Link>README.md</Link>
+        </Content>
+    </ItemGroup>
 </Project>

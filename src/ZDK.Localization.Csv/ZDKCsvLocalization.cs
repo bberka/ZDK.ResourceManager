@@ -43,7 +43,7 @@ public class ZDKCsvLocalization : ZDKLocalizationBase
 
 
 	private void SetupCsvWatcher() {
-		var csvFilePath = _csvConfiguration.CsvFilePath;
+		var csvFilePath = _csvConfiguration.SourcePath;
 		var directoryPath = Path.GetDirectoryName(csvFilePath);
 		var fileName = Path.GetFileName(csvFilePath);
 

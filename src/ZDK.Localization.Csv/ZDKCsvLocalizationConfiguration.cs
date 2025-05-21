@@ -12,13 +12,12 @@ public class ZDKCsvLocalizationConfiguration : IZDKLocalizationConfiguration
 	/// <summary>
 	///  Specifies the path to the CSV file containing localization data.
 	/// </summary>
-	public required string CsvFilePath { get; init; }
+	public required string SourcePath { get; init; }
 
 	/// <summary>
-	/// Defines the default culture to be used for localization
-	/// when no culture is explicitly specified.
+	/// Defines the default culture to be used for localization when no culture is explicitly specified. Default is en-US.
 	/// </summary>
-	public required CultureInfo DefaultCulture { get; init; }
+	public CultureInfo DefaultCulture { get; init; } = new("en-US");
 
 	/// <summary>
 	/// Specifies the cultures supported for localization.
@@ -26,12 +25,23 @@ public class ZDKCsvLocalizationConfiguration : IZDKLocalizationConfiguration
 	public required CultureInfo[] SupportedCultures { get; init; }
 
 	/// <summary>
-	/// Defines the strategy for handling missing localization keys.
+	/// Defines the strategy for handling missing localization keys. Default is ReturnKey.
 	/// </summary>
-	public required ZDKMissingLocalizationKeyHandleMethod MissingLocalizationKeyHandleMethod { get; init; }
+	public ZDKMissingLocalizationKeyHandleMethod MissingLocalizationKeyHandleMethod { get; init; } = ZDKMissingLocalizationKeyHandleMethod.ReturnKey;
+
+	/// <summary>
+	/// Reloads the localization data when the file changes. Default is true.
+	/// </summary>
+	public bool ReloadOnFileChange { get; init; } = true;
 	
 	/// <summary>
-	/// Reloads the localization data when the file changes.
+	/// Reloads the localization data when the file changes. Default is SingleFileWithAllCultures
 	/// </summary>
-	public required bool ReloadOnFileChange { get; set; }
+	public ZDKCsvLocalizationReadMethod ReadMethod { get; init; } = ZDKCsvLocalizationReadMethod.SingleFileWithAllCultures;
+	
+	/// <summary>
+	/// Gets the separator character used in the CSV file(s).
+	/// Common values are ',' and ';' and '\t'. Default is ','.
+	/// </summary>
+	public char Separator { get; init;} = ',';
 }

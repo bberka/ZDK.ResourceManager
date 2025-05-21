@@ -17,6 +17,7 @@ public static class ZDKCsvLocalizationExtensions
 		ZDKCsvLocalizationConfiguration configuration) {
 		if (configuration == null) throw new ArgumentNullException(nameof(configuration));
 
+		services.AddSingleton(configuration);
 		services.AddSingleton<IZDKLocalizationConfiguration>(configuration);
 		services.AddSingleton<IZDKLocalizationProvider, ZDKCsvLocalizationProvider>();
 		services.AddSingleton<IZDKLocalization, ZDKCsvLocalization>();
@@ -39,6 +40,7 @@ public static class ZDKCsvLocalizationExtensions
 		if (key == null) throw new ArgumentNullException(nameof(key));
 		if (configuration == null) throw new ArgumentNullException(nameof(configuration));
 
+		services.AddKeyedSingleton(configuration, key);
 		services.AddKeyedSingleton<IZDKLocalizationConfiguration>(configuration);
 		services.AddKeyedSingleton<IZDKLocalizationProvider, ZDKCsvLocalizationProvider>(key);
 		services.AddKeyedSingleton<IZDKLocalization, ZDKCsvLocalization>(key);

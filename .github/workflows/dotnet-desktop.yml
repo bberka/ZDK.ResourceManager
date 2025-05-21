@@ -107,12 +107,14 @@ jobs:
           prerelease: true
 
       - name: Upload Release Assets
-        uses: actions/upload-release-asset@v1
+        run: |
+          for file in ./release-assets/*; do
+            echo "Uploading $file..."
+            asset_name=$(basename "$file")
+            gh release upload "nightly-${{ env.NIGHTLY_VERSION }}" "$file" --name "$asset_name"
+          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_nightly_release.outputs.upload_url }}
-          asset_path: ./release-assets/*
-
+    
       - name: Publish NuGet Packages
         run: dotnet nuget push "./nuget-packages/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

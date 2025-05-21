@@ -35,34 +35,11 @@ jobs:
           echo "BASE_VERSION=${base_version}" >> $GITHUB_ENV
           echo "SHORT_SHA=${short_sha}" >> $GITHUB_ENV
 
-      - name: Verify Environment Variables
-        run: |
-          echo "NIGHTLY_VERSION=${{ env.NIGHTLY_VERSION }}"
-          echo "BASE_VERSION=${{ env.BASE_VERSION }}"
-          echo "SHORT_SHA=${{ env.SHORT_SHA }}"
-
       - name: Restore dependencies
         run: dotnet restore
 
       - name: Build solution
         run: dotnet build --configuration Release --no-restore -p:Version=${{ env.NIGHTLY_VERSION }}
-
-      - name: Install Changelog Generator
-        run: npm install -g conventional-changelog-cli
-
-      - name: Generate Changelog
-        id: changelog
-        run: |
-          latest_tag_for_changelog=$(git describe --tags --abbrev=0 2>/dev/null | grep -v '^nightly-' | head -n 1 || echo "v0.0.0")
-          changelog_output_file="CHANGELOG_TEMP.md"
-          conventional-changelog -p angular -i $changelog_output_file -s --commit-path . --previous-tag $latest_tag_for_changelog
-          changelog_content=$(cat $changelog_output_file)
-          changelog_content="${changelog_content//'%'/'%25'}"
-          changelog_content="${changelog_content//$'\n'/'%0A'}"
-          changelog_content="${changelog_content//$'\r'/'%0D'}"
-          echo "CHANGELOG_CONTENT<<EOF" >> $GITHUB_OUTPUT
-          echo "$changelog_content" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Publish Projects
         run: |
@@ -75,46 +52,39 @@ jobs:
         run: |
           rm -rf release-assets
           mkdir release-assets
-
-      - name: Zip Projects
-        run: |
           zip -r ./release-assets/ZDK.ResourceManager.Abstractions-nightly-${{ env.NIGHTLY_VERSION }}.zip ./publish/ZDK.ResourceManager.Abstractions
           zip -r ./release-assets/ZDK.Localization.Abstractions-nightly-${{ env.NIGHTLY_VERSION }}.zip ./publish/ZDK.Localization.Abstractions
           zip -r ./release-assets/ZDK.Localization.Csv-nightly-${{ env.NIGHTLY_VERSION }}.zip ./publish/ZDK.Localization.Csv
           zip -r ./release-assets/ZDK.ResourceManager.FileSystem-nightly-${{ env.NIGHTLY_VERSION }}.zip ./publish/ZDK.ResourceManager.FileSystem
 
-      - name: Pack NuGet Packages
+      - name: Generate Custom Release Notes
+        id: custom_release_notes
         run: |
-          dotnet pack ./src/ZDK.ResourceManager.Abstractions/ZDK.ResourceManager.Abstractions.csproj --configuration Release --no-build -p:Version=${{ env.NIGHTLY_VERSION }} -o ./nuget-packages
-          dotnet pack ./src/ZDK.Localization.Abstractions/ZDK.Localization.Abstractions.csproj --configuration Release --no-build -p:Version=${{ env.NIGHTLY_VERSION }} -o ./nuget-packages
-          dotnet pack ./src/ZDK.Localization.Csv/ZDK.Localization.Csv.csproj --configuration Release --no-build -p:Version=${{ env.NIGHTLY_VERSION }} -o ./nuget-packages
-          dotnet pack ./src/ZDK.ResourceManager.FileSystem/ZDK.ResourceManager.FileSystem.csproj --configuration Release --no-build -p:Version=${{ env.NIGHTLY_VERSION }} -o ./nuget-packages
+          echo "Generating custom release notes..."
+          echo "**Nightly Build Release Notes**" > release_notes.md
+          echo "Version: ${{ env.NIGHTLY_VERSION }}" >> release_notes.md
+          echo "Base Version: ${{ env.BASE_VERSION }}" >> release_notes.md
+          echo "Short SHA: ${{ env.SHORT_SHA }}" >> release_notes.md
+          echo "Changelog:" >> release_notes.md
+          echo "${{ steps.changelog.outputs.CHANGELOG_CONTENT }}" >> release_notes.md
+          echo "release_notes.md" >> $GITHUB_OUTPUT
 
-      - name: Create Nightly GitHub Release
-        id: create_nightly_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/heads/')
         with:
           tag_name: nightly-${{ env.NIGHTLY_VERSION }}
-          release_name: Nightly Build - ${{ env.NIGHTLY_VERSION }}
-          body: |
-            **This is a nightly development build based on version ${{ env.BASE_VERSION }}. Use with caution.**
-
-            **Changelog (since last stable release):**
-            ${{ steps.changelog.outputs.CHANGELOG_CONTENT }}
+          name: Nightly Build - ${{ env.NIGHTLY_VERSION }}
           draft: false
           prerelease: true
+          generate_release_notes: false
+          body_path: release_notes.md
+          append_body: true
+          files: |
+            ./release-assets/ZDK.ResourceManager.Abstractions-nightly-${{ env.NIGHTLY_VERSION }}.zip
+            ./release-assets/ZDK.Localization.Abstractions-nightly-${{ env.NIGHTLY_VERSION }}.zip
+            ./release-assets/ZDK.Localization.Csv-nightly-${{ env.NIGHTLY_VERSION }}.zip
+            ./release-assets/ZDK.ResourceManager.FileSystem-nightly-${{ env.NIGHTLY_VERSION }}.zip
 
-      - name: Upload Release Assets
-        run: |
-          for file in ./release-assets/*; do
-            echo "Uploading $file..."
-            asset_name=$(basename "$file")
-            gh release upload "nightly-${{ env.NIGHTLY_VERSION }}" "$file" --name "$asset_name"
-          done
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
       - name: Publish NuGet Packages
         run: dotnet nuget push "./nuget-packages/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

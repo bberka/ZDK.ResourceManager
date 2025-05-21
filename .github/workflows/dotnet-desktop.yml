@@ -56,7 +56,7 @@ jobs:
           echo "Nightly version determined: $nightly_version"
 
       - name: Restore dependencies
-        run: dotnet restore ./src
+        run: dotnet restore
 
       - name: Build solution
         run: dotnet build ./src --configuration Release --no-restore -p:Version=${{ env.NIGHTLY_VERSION }}

@@ -20,11 +20,14 @@ public static class ZDKFileSystemResourceExtensions
 		}
 
 		services.AddSingleton(configuration);
+		services.AddSingleton<IZDKResourceConfiguration>(configuration);
+		
 		services.AddSingleton<IZDKResourceFileProvider, ZDKFileSystemResourceProvider>();
 		if (configuration.ReloadOnFileChange) {
 			services.AddSingleton<IZDKResourceFileWatcher, ZDKFileSystemResourceWatcher>();
 		}
-		services.AddSingleton<IZDKResourceFileManager, ZDKFileSystemResourceManager>(); // Use IZDKResourceFileManager here
+
+		services.AddSingleton<IZDKResourceFileManager, ZDKFileSystemResourceManager>();
 		return services;
 	}
 
@@ -49,8 +52,8 @@ public static class ZDKFileSystemResourceExtensions
 			throw new ArgumentNullException(nameof(configuration));
 		}
 
-		services.AddKeyedSingleton(typeof(ZDKFileSystemResourceConfiguration), key, configuration);
-		services.AddSingleton(configuration); 
+		services.AddKeyedSingleton(key, configuration);
+		services.AddKeyedSingleton<IZDKResourceConfiguration>(key);
 
 		services.AddKeyedSingleton<IZDKResourceFileProvider, ZDKFileSystemResourceProvider>(key);
 

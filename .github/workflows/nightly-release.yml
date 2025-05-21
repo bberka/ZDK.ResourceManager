@@ -71,36 +71,51 @@ jobs:
         run: |
           echo "Generating custom release notes..."
 
-          # Get the latest tag (stable or nightly)
-          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
-
-          # If no tags exist, use the initial commit as the starting point
-          if [ "$latest_tag" = "none" ]; then
-            echo "No previous tags found. Using initial commit."
-            start_ref=$(git rev-list --max-parents=0 HEAD)
+          # Find the latest nightly tag
+          LAST_NIGHTLY_TAG=$(git tag --sort=-creatordate | grep "nightly-" | head -n 1)
+          if [ -n "$LAST_NIGHTLY_TAG" ] && [ "$LAST_NIGHTLY_TAG" != "${{ steps.release_tag.outputs.tag }}" ]; then
+            LAST_NIGHTLY_COMMIT=$(git rev-list -n 1 $LAST_NIGHTLY_TAG)
+            echo "Finding commits since last nightly build tag: $LAST_NIGHTLY_TAG ($LAST_NIGHTLY_COMMIT)"
+            GIT_LOG_RANGE="$LAST_NIGHTLY_COMMIT..${{ github.sha }}"
           else
-            echo "Latest tag found: $latest_tag"
-            start_ref=$latest_tag
+            echo "No previous nightly tag found or it's the same as the current tag. Using all commits."
+            GIT_LOG_RANGE="${{ github.sha }}"
           fi
 
-          # Get the current commit
-          end_ref=$(git rev-parse HEAD)
+          # Create the release notes file
+          echo "" > custom_release_notes.md
 
-          # Generate the commit list
-          commit_list=$(git log --oneline $start_ref..$end_ref)
+          # Generate merge commits (pull requests)
+          MERGE_COMMITS_INFO=$(git log --merges --pretty=format:"- [%h](https://github.com/${{ github.repository }}/commit/%H) %s" $GIT_LOG_RANGE)
+          if [ -n "$MERGE_COMMITS_INFO" ]; then
+            echo "## Pull Requests" >> custom_release_notes.md
+            echo "$MERGE_COMMITS_INFO" | while read -r line; do
+              if [[ "$line" =~ ^-\ \[([0-9a-f]+)\]\(https://github.com/.+/commit/[0-9a-f]+\)\ Merge\ pull\ request\ #([0-9]+)\ from\ .+$ ]]; then
+                SHORT_SHA=${BASH_REMATCH[1]}
+                PR_NUMBER=${BASH_REMATCH[2]}
+                echo "- Merged PR #[${PR_NUMBER}](https://github.com/${{ github.repository }}/pull/${PR_NUMBER})" >> custom_release_notes.md
+              else
+                echo "$line" >> custom_release_notes.md
+              fi
+            done
+          fi
 
-          # Generate the GitHub compare link
-          repo_url="https://github.com/${{ github.repository }}"
-          compare_url="$repo_url/compare/$start_ref...$end_ref"
+          echo "" >> custom_release_notes.md
 
-          # Write the release notes to a file
-          echo "**Commits since last release ($start_ref):**" > release_notes.md
-          echo "$commit_list" >> release_notes.md
-          echo "" >> release_notes.md
-          echo "**[Full Changelog]($compare_url)**" >> release_notes.md
+          # Generate non-merge commits
+          NON_MERGE_COMMITS_INFO=$(git log --no-merges --pretty=format:"- [%h](https://github.com/${{ github.repository }}/commit/%H) %s" $GIT_LOG_RANGE)
+          if [ -n "$NON_MERGE_COMMITS_INFO" ]; then
+            echo "## Commits" >> custom_release_notes.md
+            echo "$NON_MERGE_COMMITS_INFO" >> custom_release_notes.md
+          fi
 
           # Output the path to the release notes file
-          echo "body_path=release_notes.md" >> $GITHUB_OUTPUT
+          echo "::set-output name=body_path::custom_release_notes.md"
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF: ${{ github.ref }}
+        working-directory: ${{ github.workspace }}
+
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -118,3 +133,4 @@ jobs:
             ./release-assets/ZDK.Localization.Abstractions-nightly-${{ env.NIGHTLY_VERSION }}.zip
             ./release-assets/ZDK.Localization.Csv-nightly-${{ env.NIGHTLY_VERSION }}.zip
             ./release-assets/ZDK.ResourceManager.FileSystem-nightly-${{ env.NIGHTLY_VERSION }}.zip
+

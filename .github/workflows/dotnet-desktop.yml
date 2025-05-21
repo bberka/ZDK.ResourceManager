@@ -59,7 +59,7 @@ jobs:
         run: dotnet restore
 
       - name: Build solution
-        run: dotnet build ./src --configuration Release --no-restore -p:Version=${{ env.NIGHTLY_VERSION }}
+        run: dotnet build --configuration Release --no-restore -p:Version=${{ env.NIGHTLY_VERSION }}
         # Pass the determined nightly version to the build
 
       # --- Changelog Generation ---

@@ -37,17 +37,12 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build and Pack NuGet Packages
+      - name: Publish Projects
         run: |
-          dotnet build ./src/ZDK.ResourceManager.Abstractions/ZDK.ResourceManager.Abstractions.csproj --configuration Release -p:Version=${{ env.NIGHTLY_VERSION }}
-          dotnet build ./src/ZDK.Localization.Abstractions/ZDK.Localization.Abstractions.csproj --configuration Release -p:Version=${{ env.NIGHTLY_VERSION }}
-          dotnet build ./src/ZDK.Localization.Csv/ZDK.Localization.Csv.csproj --configuration Release -p:Version=${{ env.NIGHTLY_VERSION }}
-          dotnet build ./src/ZDK.ResourceManager.FileSystem/ZDK.ResourceManager.FileSystem.csproj --configuration Release -p:Version=${{ env.NIGHTLY_VERSION }}
-          echo "NuGet packages created during build."
-          ls -R ./src/**/bin/Release
-
-      - name: Publish NuGet Packages
-        run: dotnet nuget push "./src/**/bin/Release/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet publish ./src/ZDK.ResourceManager.Abstractions/ZDK.ResourceManager.Abstractions.csproj -c Release -o ./publish/ZDK.ResourceManager.Abstractions -p:Version=${{ env.NIGHTLY_VERSION }}
+          dotnet publish ./src/ZDK.Localization.Abstractions/ZDK.Localization.Abstractions.csproj -c Release -o ./publish/ZDK.Localization.Abstractions -p:Version=${{ env.NIGHTLY_VERSION }}
+          dotnet publish ./src/ZDK.Localization.Csv/ZDK.Localization.Csv.csproj -c Release -o ./publish/ZDK.Localization.Csv -p:Version=${{ env.NIGHTLY_VERSION }}
+          dotnet publish ./src/ZDK.ResourceManager.FileSystem/ZDK.ResourceManager.FileSystem.csproj -c Release -o ./publish/ZDK.ResourceManager.FileSystem -p:Version=${{ env.NIGHTLY_VERSION }}
 
       - name: Prepare Release Assets Directory
         run: mkdir -p release-assets
@@ -61,6 +56,9 @@ jobs:
 
       - name: Verify Release Assets
         run: ls -R ./release-assets
+
+      - name: Publish NuGet Packages
+        run: dotnet nuget push "./src/**/bin/Release/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Generate Custom Release Notes
         id: custom_release_notes

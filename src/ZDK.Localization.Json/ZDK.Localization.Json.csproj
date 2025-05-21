@@ -6,13 +6,26 @@
         <Nullable>enable</Nullable>
         <RootNamespace>ZDK.Localization.Providers.Json</RootNamespace>
         <Title>ZDK.Localization.Json</Title>
-        <Authors>bberka</Authors>
-        <PackageLicenseUrl>https://raw.githubusercontent.com/bberka/ZDK.ResourceManager/refs/heads/master/LICENSE</PackageLicenseUrl>
+        <Description>Provides a Json-based localization provider for ZDK.Localization.</Description>
         <RepositoryUrl>https://github.com/bberka/ZDK.ResourceManager/</RepositoryUrl>
+        <Authors>bberka</Authors>
+        <Company>ZDK</Company>
+        <PackageTags>localization, localize, i18n, l10n, zdk, resource, manager, resources, file, system</PackageTags>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\ZDK.Localization.Abstractions\ZDK.Localization.Abstractions.csproj"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="..\..\LICENSE">
+            <Link>LICENSE</Link>
+        </Content>
+        <Content Include="..\..\README.md">
+            <Link>README.md</Link>
+        </Content>
     </ItemGroup>
 
 </Project>

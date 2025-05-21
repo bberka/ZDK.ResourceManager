@@ -5,9 +5,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Title>ZDK.ResourceManager.FileSystem</Title>
-        <Authors>bberka</Authors>
-        <PackageLicenseUrl>https://raw.githubusercontent.com/bberka/ZDK.ResourceManager/refs/heads/master/LICENSE</PackageLicenseUrl>
+        <Description>Provides a FileSystem-based resource manager for ZDK.ResourceManager.</Description>
         <RepositoryUrl>https://github.com/bberka/ZDK.ResourceManager/</RepositoryUrl>
+        <Authors>bberka</Authors>
+        <Company>ZDK</Company>
+        <PackageTags>localization, localize, i18n, l10n, zdk, resource, manager, resources, file, system</PackageTags>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>

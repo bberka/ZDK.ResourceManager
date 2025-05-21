@@ -5,9 +5,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Title>ZDK.Localization.Csv</Title>
-        <Authors>bberka</Authors>
-        <PackageLicenseUrl>https://raw.githubusercontent.com/bberka/ZDK.ResourceManager/refs/heads/master/LICENSE</PackageLicenseUrl>
+        <Description>Provides a CSV-based localization provider for ZDK.Localization.</Description>
         <RepositoryUrl>https://github.com/bberka/ZDK.ResourceManager/</RepositoryUrl>
+        <Authors>bberka</Authors>
+        <Company>ZDK</Company>
+        <PackageTags>localization, localize, i18n, l10n, zdk, resource, manager, resources, file, system</PackageTags>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +21,15 @@
     <ItemGroup>
         <PackageReference Include="CsvHelper" Version="33.0.1"/>
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\..\LICENSE">
+            <Link>LICENSE</Link>
+        </Content>
+        <Content Include="..\..\README.md">
+            <Link>README.md</Link>
+        </Content>
     </ItemGroup>
 
 </Project>

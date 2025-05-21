@@ -4,6 +4,10 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Title>ZDK.ResourceManager.Abstractions</Title>
+        <Authors>bberka</Authors>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/bberka/ZDK.ResourceManager/refs/heads/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/bberka/ZDK.ResourceManager/</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>

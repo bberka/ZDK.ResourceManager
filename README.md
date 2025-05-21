@@ -234,4 +234,3 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgements
 
 *   [CsvHelper](https://joshclose.github.io/CsvHelper/) - For CSV parsing.
-*   <!-- Any other libraries or inspirations -->

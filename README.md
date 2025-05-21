@@ -1,6 +1,8 @@
 # ZDK Resource & Localization Management Libraries
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Abstractions](https://img.shields.io/nuget/v/ZDK.Localization.Abstractions.svg)](https://www.nuget.org/packages/ZDK.Localization.Abstractions/)
+
 
 A flexible and extensible set of .NET libraries for managing application resources and localization. This project provides a core framework with abstractions and allows for different provider implementations (e.g., File System, CSV).
 
@@ -21,6 +23,22 @@ The ZDK Resource and Localization libraries are designed to provide a clean, con
 ## Packages
 
 This solution is structured into several NuGet packages:
+
+`ZDK.Localization.Abstractions`
+
+Provides the core interfaces and enums for the localization system. This package is essential for defining the contracts that other localization providers will implement.
+
+`ZDK.Localization.Csv`
+
+Provides an implementation for loading localization data from CSV files. This package includes DI extension methods for easy integration into your application.
+
+`ZDK.ResourceManager.Abstractions`
+
+Provides the core interfaces and enums for the resource file management system. This package is essential for defining the contracts that other resource providers will implement.
+
+`ZDK.ResourceManager.FileSystem`
+Provides implementations for loading resource files from the local file system and watching for changes. This package includes DI extension methods for easy integration into your application.
+
 
 ### Localization
 

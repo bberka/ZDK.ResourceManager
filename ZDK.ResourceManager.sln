@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZDK.ResourceManager.Abstrac
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Localizations", "Localizations", "{3A87375B-0B4A-4F31-B49C-ABEF18387814}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZDK.ResourceManager.Providers.FileSystem", "src\ZDK.ResourceManager.Providers.FileSystem\ZDK.ResourceManager.Providers.FileSystem.csproj", "{2189C40A-7E65-4ABC-A039-3D93C68898B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZDK.ResourceManager.FileSystem", "src\ZDK.ResourceManager.FileSystem\ZDK.ResourceManager.FileSystem.csproj", "{2189C40A-7E65-4ABC-A039-3D93C68898B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Abstract", "Abstract", "{8BC1EAFE-18F7-44CF-9D63-AF2E1AADACDE}"
 EndProject

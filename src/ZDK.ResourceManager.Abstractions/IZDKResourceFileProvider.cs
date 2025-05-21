@@ -3,7 +3,7 @@ namespace ZDK.ResourceManager.Abstractions;
 /// <summary>
 /// Defines an interface for loading resource files from a source.
 /// </summary>
-public interface IZDKResourceFileProvider : IDisposable
+public interface IZDKResourceFileProvider
 {
 	/// <summary>
 	/// Loads all resource files from the specified source using the provided configuration.

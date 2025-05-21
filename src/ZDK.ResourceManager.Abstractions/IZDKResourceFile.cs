@@ -7,7 +7,7 @@ namespace ZDK.ResourceManager.Abstractions;
 /// <summary>
 /// Defines the contract for a resource file, abstracting its source location.
 /// </summary>
-public interface IZDKResourceFile : IDisposable // Resource streams should be disposable
+public interface IZDKResourceFile
 {
 	/// <summary>
 	/// Gets the unique identifier or URI of the resource file.

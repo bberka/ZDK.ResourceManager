@@ -28,11 +28,12 @@ public interface IZDKResourceFileManager // Consider IDisposable if the manager 
 	/// <exception cref="ZDKMissingResourceFileException">Thrown when the file with the specified name is not found by the manager.</exception> // Custom exception
 	IZDKResourceFile GetFileOrThrow(string fileName);
 
-	// Indexers for convenience
+
 	/// <summary>
-	/// Gets the resource file with the specified name.
+	/// Searches for resource files that match the given search pattern.
 	/// </summary>
-	/// <param name="fileName">The name of the file to look up (case-insensitive recommended).</param>
-	/// <returns>The resource file if found; otherwise, null.</returns>
-	IZDKResourceFile? this[string fileName] { get; }
+	/// <param name="searchPattern">The search pattern to use for filtering files. This can be a substring or specific criteria.</param>
+	/// <param name="comparison">Specifies how the search pattern comparison should be performed. Defaults to ordinal comparison.</param>
+	/// <returns>An array of resource files that match the search criteria.</returns>
+	IZDKResourceFile[] SearchFiles(string searchPattern, StringComparison comparison = StringComparison.Ordinal);
 }

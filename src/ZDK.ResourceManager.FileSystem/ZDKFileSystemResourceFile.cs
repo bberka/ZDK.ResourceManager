@@ -5,7 +5,7 @@ namespace ZDK.ResourceManager.FileSystem;
 /// <summary>
 /// Represents a resource file located on the file system.
 /// </summary>
-public sealed class ZDKFileSystemResourceFile : IZDKResourceFile
+public sealed record ZDKFileSystemResourceFile : IZDKResourceFile
 {
 	public string FileUri { get; }
 	public string FileName { get; }

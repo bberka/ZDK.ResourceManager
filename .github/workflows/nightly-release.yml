@@ -22,7 +22,7 @@ jobs:
       - name: Setup .NET 9
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: "9.0.x"
 
       - name: Determine Nightly Version
         id: versioning
@@ -40,8 +40,6 @@ jobs:
       - name: Publish Projects
         run: |
           dotnet publish ./src/ZDK.ResourceManager.Abstractions/ZDK.ResourceManager.Abstractions.csproj -c Release -o ./publish/ZDK.ResourceManager.Abstractions -p:Version=${{ env.NIGHTLY_VERSION }}
-          dotnet publish ./src/ZDK.Localization.Abstractions/ZDK.Localization.Abstractions.csproj -c Release -o ./publish/ZDK.Localization.Abstractions -p:Version=${{ env.NIGHTLY_VERSION }}
-          dotnet publish ./src/ZDK.Localization.Csv/ZDK.Localization.Csv.csproj -c Release -o ./publish/ZDK.Localization.Csv -p:Version=${{ env.NIGHTLY_VERSION }}
           dotnet publish ./src/ZDK.ResourceManager.FileSystem/ZDK.ResourceManager.FileSystem.csproj -c Release -o ./publish/ZDK.ResourceManager.FileSystem -p:Version=${{ env.NIGHTLY_VERSION }}
 
       - name: Prepare Release Assets Directory
@@ -50,8 +48,6 @@ jobs:
       - name: Zip Published Projects
         run: |
           zip -r ./release-assets/ZDK.ResourceManager.Abstractions-nightly-${{ env.NIGHTLY_VERSION }}.zip ./publish/ZDK.ResourceManager.Abstractions
-          zip -r ./release-assets/ZDK.Localization.Abstractions-nightly-${{ env.NIGHTLY_VERSION }}.zip ./publish/ZDK.Localization.Abstractions
-          zip -r ./release-assets/ZDK.Localization.Csv-nightly-${{ env.NIGHTLY_VERSION }}.zip ./publish/ZDK.Localization.Csv
           zip -r ./release-assets/ZDK.ResourceManager.FileSystem-nightly-${{ env.NIGHTLY_VERSION }}.zip ./publish/ZDK.ResourceManager.FileSystem
 
       - name: Verify Release Assets
@@ -123,6 +119,4 @@ jobs:
           append_body: false
           files: |
             ./release-assets/ZDK.ResourceManager.Abstractions-${{ env.NIGHTLY_VERSION }}.zip
-            ./release-assets/ZDK.Localization.Abstractions-${{ env.NIGHTLY_VERSION }}.zip
-            ./release-assets/ZDK.Localization.Csv-${{ env.NIGHTLY_VERSION }}.zip
             ./release-assets/ZDK.ResourceManager.FileSystem-${{ env.NIGHTLY_VERSION }}.zip

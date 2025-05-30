@@ -136,6 +136,24 @@ public abstract class ZDKResourceManagerBase : IZDKResourceFileManager
 		throw new ZDKMissingResourceFileException(fileName);
 	}
 
+	public IZDKResourceFile[] SearchFiles(string searchPattern, StringComparison comparison = StringComparison.Ordinal) {
+		if (string.IsNullOrWhiteSpace(searchPattern)) {
+			Logger.LogWarning("Search pattern is null or empty. Returning empty array");
+			return [];
+		}
+
+		var matchingFiles = Files.Where(f => f.FileName.Contains(searchPattern, comparison)).ToArray();
+
+		if (matchingFiles.Length == 0) {
+			Logger.LogInformation("No files found matching the search pattern: {SearchPattern}", searchPattern);
+		}
+		else {
+			Logger.LogInformation("{FileCount} files found matching the search pattern: {SearchPattern}", matchingFiles.Length, searchPattern);
+		}
+
+		return matchingFiles;
+	}
+
 	public IZDKResourceFile? this[string fileName] => GetFile(fileName);
 
 	public IImmutableSet<IZDKResourceFile> GetFiles() {

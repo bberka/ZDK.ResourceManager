@@ -8,6 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Abstract", "Abstract", "{8B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ResourceManagers", "ResourceManagers", "{50C217D3-0F7A-412E-AAE5-F0D2E415AB65}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZDK.ResourceManager.Ftp", "src\ZDK.ResourceManager.Ftp\ZDK.ResourceManager.Ftp.csproj", "{2B29E6A3-0061-488C-920E-65755D6AD03B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,9 +24,14 @@ Global
 		{2189C40A-7E65-4ABC-A039-3D93C68898B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2189C40A-7E65-4ABC-A039-3D93C68898B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2189C40A-7E65-4ABC-A039-3D93C68898B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B29E6A3-0061-488C-920E-65755D6AD03B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B29E6A3-0061-488C-920E-65755D6AD03B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B29E6A3-0061-488C-920E-65755D6AD03B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B29E6A3-0061-488C-920E-65755D6AD03B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{61407D33-C131-4219-9BBB-7F7A4BC6924D} = {8BC1EAFE-18F7-44CF-9D63-AF2E1AADACDE}
 		{2189C40A-7E65-4ABC-A039-3D93C68898B7} = {50C217D3-0F7A-412E-AAE5-F0D2E415AB65}
+		{2B29E6A3-0061-488C-920E-65755D6AD03B} = {50C217D3-0F7A-412E-AAE5-F0D2E415AB65}
 	EndGlobalSection
 EndGlobal

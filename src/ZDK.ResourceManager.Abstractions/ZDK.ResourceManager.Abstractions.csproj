@@ -9,7 +9,7 @@
         <RepositoryUrl>https://github.com/bberka/ZDK.ResourceManager/</RepositoryUrl>
         <Authors>bberka</Authors>
         <Company>ZDK</Company>
-        <PackageTags>localization, localize, i18n, l10n, zdk, resource, manager, resources, file, system</PackageTags>
+        <PackageTags>zdk, resource, manager, resources, file, system</PackageTags>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

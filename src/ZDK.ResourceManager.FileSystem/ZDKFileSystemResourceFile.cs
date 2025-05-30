@@ -12,7 +12,7 @@ public sealed class ZDKFileSystemResourceFile : IZDKResourceFile
 	public string FileExtension { get; }
 	public string FileNameWithoutExtension { get; }
 
-	public ZDKFileSystemResourceFile(string filePath) {
+	public ZDKFileSystemResourceFile(string filePath, string? basePath = null) {
 		if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("File path cannot be null or whitespace.", nameof(filePath));
 
 		if (!File.Exists(filePath)) {
@@ -20,7 +20,9 @@ public sealed class ZDKFileSystemResourceFile : IZDKResourceFile
 		}
 
 		FileUri = filePath;
-		FileName = Path.GetFileName(filePath);
+		FileName = string.IsNullOrEmpty(basePath) 
+			? Path.GetFileName(filePath) 
+			: Path.GetRelativePath(basePath, filePath);
 		FileExtension = Path.GetExtension(filePath);
 		FileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
 	}

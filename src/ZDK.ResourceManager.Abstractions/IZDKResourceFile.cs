@@ -37,6 +37,10 @@ public interface IZDKResourceFile
 	/// <returns>A read-only stream of the resource file's content.</returns>
 	/// <exception cref="ResourceFileAccessException">Thrown if there's an error accessing the resource content.</exception> // Custom exception for access issues
 	Stream GetStream();
+	
+	string GetContentAsString(); // Optional: Get the content as a string, useful for text files
+	
+	string[] GetContentAsLines(); // Optional: Get the content as an array of lines, useful for text files
 
 	// Consider adding:
 	// long Size { get; } // File size

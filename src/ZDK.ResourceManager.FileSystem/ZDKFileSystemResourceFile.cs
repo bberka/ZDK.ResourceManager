@@ -50,4 +50,22 @@ public sealed class ZDKFileSystemResourceFile : IZDKResourceFile
 			throw new ResourceFileAccessException($"An unexpected error occurred while accessing file stream for '{FileUri}'.", ex);
 		}
 	}
+
+	public string GetContentAsString() {
+		using var stream = GetStream();
+		using var reader = new StreamReader(stream);
+		return reader.ReadToEnd();
+	}
+	public string[] GetContentAsLines() {
+		using var stream = GetStream();
+		using var reader = new StreamReader(stream);
+		var lines = new List<string>();
+		while (!reader.EndOfStream) {
+			var line = reader.ReadLine()?.Trim();
+			if (!string.IsNullOrEmpty(line)) {
+				lines.Add(line);
+			}
+		}
+		return lines.ToArray();
+	}
 }

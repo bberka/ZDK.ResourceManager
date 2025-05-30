@@ -41,11 +41,11 @@ public class ZDKFileSystemResourceWatcher : IZDKResourceFileWatcher
 				EnableRaisingEvents = true
 			};
 
-			_watcher.Created += (s, e) => ResourceChanged?.Invoke(this, e);
-			_watcher.Deleted += (s, e) => ResourceChanged?.Invoke(this, e);
-			_watcher.Changed += (s, e) => ResourceChanged?.Invoke(this, e);
-			_watcher.Renamed += (s, e) => ResourceRenamed?.Invoke(this, e);
-			_watcher.Error += (s, e) => WatcherError?.Invoke(this, e);
+			_watcher.Created += (_, e) => ResourceChanged?.Invoke(this, e);
+			_watcher.Deleted += (_, e) => ResourceChanged?.Invoke(this, e);
+			_watcher.Changed += (_, e) => ResourceChanged?.Invoke(this, e);
+			_watcher.Renamed += (_, e) => ResourceRenamed?.Invoke(this, e);
+			_watcher.Error += (_, e) => WatcherError?.Invoke(this, e);
 
 			_logger.LogInformation("Started watching resource directory: {DirectoryPath}", directoryPath);
 		}

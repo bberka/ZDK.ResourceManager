@@ -1,42 +1,30 @@
-# ZDK Resource & Localization Management Libraries
+# ZDK Resource Management
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Abstractions](https://img.shields.io/nuget/v/ZDK.Localization.Abstractions.svg)](https://www.nuget.org/packages/ZDK.Localization.Abstractions/)
+[![Abstractions](https://img.shields.io/nuget/v/ZDK.ResourceManager.Abstractions.svg)](https://www.nuget.org/packages/ZDK.ResourceManager.Abstractions/)
 
-A flexible and extensible set of .NET libraries for managing application resources and localization. This project
-provides a core framework with abstractions and allows for different provider implementations (e.g., File System, CSV).
+A flexible and extensible set of .NET libraries for managing application resources. This project
+provides a core framework with abstractions and allows for different provider implementations (e.g., File System).
 
 ## Overview
 
-The ZDK Resource and Localization libraries are designed to provide a clean, configurable, and testable way to handle
-external resources and localized strings in your .NET applications.
-
+The ZDK Resource Management libraries are designed to provide a clean, configurable, and testable way to handle
+external resources in your .NET applications. **"ZDK" is the prefix for our company's open-source projects, indicating that these libraries are developed and maintained by ZDK Network**
 **Key Features:**
 
-* **Abstraction-First Design:** Core interfaces define the contracts, allowing for different underlying implementations.
-* **Resource Management:** Load and access various types of resource files (e.g., configuration, assets).
-* **Localization Management:** Load and access localized strings for multi-language applications.
-* **Provider Model:** Easily extend the system with custom providers for different data sources (e.g., File System, FTP,
-  AWS S3, Databases).
-* **Optional File Watching:** Built-in support for watching file system changes and automatically reloading
-  resources/localization data (configurable).
-* **Dependency Injection Friendly:** Includes extension methods for easy integration with
-  `Microsoft.Extensions.DependencyInjection`.
-* **Configurable Behavior:** Options for handling missing keys/files, default cultures, etc.
+*   **Abstraction-First Design:** Core interfaces define the contracts, allowing for different underlying implementations.
+*   **Resource Management:** Load and access various types of resource files (e.g., configuration, assets).
+*   **Provider Model:** Easily extend the system with custom providers for different data sources (e.g., File System, FTP,
+    AWS S3, Databases).
+*   **Optional File Watching:** Built-in support for watching file system changes and automatically reloading
+    resources (configurable).
+*   **Dependency Injection Friendly:** Includes extension methods for easy integration with
+    `Microsoft.Extensions.DependencyInjection`.
+*   **Configurable Behavior:** Options for handling missing files, etc.
 
 ## Packages
 
 This solution is structured into several NuGet packages:
-
-`ZDK.Localization.Abstractions`
-
-Provides the core interfaces and enums for the localization system. This package is essential for defining the contracts
-that other localization providers will implement.
-
-`ZDK.Localization.Csv`
-
-Provides an implementation for loading localization data from CSV files. This package includes DI extension methods for
-easy integration into your application.
 
 `ZDK.ResourceManager.Abstractions`
 
@@ -47,185 +35,98 @@ the contracts that other resource providers will implement.
 Provides implementations for loading resource files from the local file system and watching for changes. This package
 includes DI extension methods for easy integration into your application.
 
-### Localization
-
-* **`ZDK.Localization.Abstractions`**: Contains the core interfaces and enums for the localization system (
-  `IZDKLocalizationManager`, `IZDKLocalizationProvider`, `IZDKLocalizationConfiguration`, etc.).
-* **`ZDK.Localization.Csv`**: Provides an implementation for loading localization data from CSV files. Includes DI
-  extension methods (`AddZDKCsvLocalization`).
-    * Supports single CSV file with cultures as columns.
-    * Supports multiple CSV files (one per culture).
-    * Configurable separator.
-
 ### Resource Management
 
-* **`ZDK.ResourceManager.Abstractions`**: Contains the core interfaces and enums for the resource file management
-  system (`IZDKResourceFileManager`, `IZDKResourceFileProvider`, `IZDKResourceFileWatcher`, `IZDKResourceFile`,
-  `IZDKResourceConfiguration`, etc.).
-* **`ZDK.ResourceManager.FileSystem`**: Provides implementations for loading resource files from the local file system
-  and watching for changes. Includes DI extension methods (`AddZDKFileSystemResourceManager`).
+*   **`ZDK.ResourceManager.Abstractions`**: Contains the core interfaces and enums for the resource file management
+    system (`IZDKResourceFileManager`, `IZDKResourceFileProvider`, `IZDKResourceFileWatcher`, `IZDKResourceFile`,
+    `IZDKResourceConfiguration`, etc.).
+*   **`ZDK.ResourceManager.FileSystem`**: Provides implementations for loading resource files from the local file system
+    and watching for changes. Includes DI extension methods (`AddZDKFileSystemResourceManager`).
 
 ## Getting Started
 
 ### Prerequisites
 
-* .NET 9 SDK
+*   .NET 9 SDK
 
 ### Installation
 
-This project still in early development, there is no nuget package released yet. Will start releasing nightly builds
-very soon.
+This project is currently in early development. Nightly builds are published as NuGet packages and are available for early testing. Please be aware that these versions are not stable and may introduce breaking changes.
 
-### Basic Usage (Localization with CSV)
+To install a nightly build, you'll need to configure your NuGet sources to include the nightly feed (details will be provided when the feed is established). Once configured, you can install the packages using the .NET CLI:
 
-1. **Create your localization CSV file(s).**
+```bash
+  dotnet add package ZDK.ResourceManager.Abstractions --version <nightly-version>
+  dotnet add package ZDK.ResourceManager.FileSystem --version <nightly-version>
+```
 
-   Example `localization.csv` (SingleFileWithAllCultures):
-   ```csv
-   key,en-US,fr-FR
-   greeting,Hello,Bonjour
-   farewell,Goodbye,Au revoir
-   ```
-
-2. **Configure services in your `Program.cs` or `Startup.cs`:**
-
-   ```csharp
-   using Microsoft.Extensions.DependencyInjection;
-   using ZDK.Localization.Abstractions;
-   using ZDK.Localization.Csv; // For extension methods and concrete config
-   using System.Globalization;
-
-   public class Program
-   {
-       public static void Main(string[] args)
-       {
-           var builder = WebApplication.CreateBuilder(args); // Or Host.CreateDefaultBuilder()
-
-           // Add ZDK CSV Localization
-           builder.Services.AddZDKCsvLocalization(config =>
-           {
-               config.CsvFilePath = "path/to/your/localization.csv"; // Or directory for multiple files
-               config.DefaultCulture = new CultureInfo("en-US");
-               config.SupportedCultures = new CultureInfo[]
-               {
-                   new CultureInfo("en-US"),
-                   new CultureInfo("fr-FR")
-               };
-               config.MissingLocalizationKeyHandleMethod = ZDKMissingLocalizationKeyHandleMethod.ReturnKey;
-               config.ReadMethod = ZDKCsvLocalizationReadMethod.SingleFileWithAllCultures;
-               config.Separator = ',';
-               config.ReloadOnFileChange = true; // Enable file watching
-           });
-
-           // ... other service registrations
-
-           var app = builder.Build();
-
-           // ... app configuration
-           app.Run();
-       }
-   }
-   ```
-
-3. **Inject and use `IZDKLocalizationManager`:**
-
-   ```csharp
-   using ZDK.Localization.Abstractions;
-
-   public class MyService
-   {
-       private readonly IZDKLocalizationManager _localizationManager;
-
-       public MyService(IZDKLocalizationManager localizationManager)
-       {
-           _localizationManager = localizationManager;
-       }
-
-       public string GetGreeting()
-       {
-           return _localizationManager.GetString("greeting");
-           // Or using the indexer: _localizationManager["greeting"];
-       }
-
-       public string GetFrenchFarewell()
-       {
-           return _localizationManager.GetString("farewell", new CultureInfo("fr-FR"));
-       }
-   }
-   ```
+Replace `<nightly-version>` with the specific version number of the nightly build you wish to use. Stable releases will be made available on NuGet.org once the project reaches a mature state.
 
 ### Basic Usage (File System Resource Management)
 
-1. **Place your resource files in a directory.**
+1.  **Place your resource files in a directory.**
 
-2. **Configure services in your `Program.cs` or `Startup.cs`:**
+2.  **Configure services in your `Program.cs`:**
 
-   ```csharp
-   using Microsoft.Extensions.DependencyInjection;
-   using ZDK.ResourceManager.Abstractions;
-   using ZDK.ResourceManager.FileSystem; // For extension methods and concrete config
+    ```csharp
+    using Microsoft.Extensions.DependencyInjection;
+    using ZDK.ResourceManager.Abstractions;
+    using ZDK.ResourceManager.FileSystem; // For extension methods and concrete config
 
-   public class Program
-   {
-       public static void Main(string[] args)
-       {
-           var builder = WebApplication.CreateBuilder(args); // Or Host.CreateDefaultBuilder()
+    var builder = WebApplication.CreateBuilder(args); // Or Host.CreateDefaultBuilder()
 
-           // Add ZDK File System Resource Manager
-           builder.Services.AddZDKFileSystemResourceManager(config =>
-           {
-               config.ResourceDirectoryPath = "path/to/your/resources";
-               config.MissingResourceFileHandleMethod = ZDKMissingResourceFileHandleMethod.ThrowException;
-               config.ReloadOnFileChange = true; // Enable file watching
-           });
+    // Add ZDK File System Resource Manager
+    builder.Services.AddZDKFileSystemResourceManager(config =>
+    {
+        config.ResourceDirectoryPath = "path/to/your/resources";
+        config.MissingResourceFileHandleMethod = ZDKMissingResourceFileHandleMethod.ThrowException;
+        config.ReloadOnFileChange = true; // Enable file watching
+    });
 
-           // ... other service registrations
+    // ... other service registrations
 
-           var app = builder.Build();
+    var app = builder.Build();
 
-           // ... app configuration
-           app.Run();
-       }
-   }
-   ```
+    // ... app configuration
+    app.Run();
+    ```
 
-3. **Inject and use `IZDKResourceFileManager`:**
+3.  **Inject and use `IZDKResourceFileManager`:**
 
-   ```csharp
-   using ZDK.ResourceManager.Abstractions;
-   using System.IO;
+    ```csharp
+    using ZDK.ResourceManager.Abstractions;
+    using System.IO;
 
-   public class MyFileService
-   {
-       private readonly IZDKResourceFileManager _resourceManager;
+    public class MyFileService
+    {
+        private readonly IZDKResourceFileManager _resourceManager;
 
-       public MyFileService(IZDKResourceFileManager resourceManager)
-       {
-           _resourceManager = resourceManager;
-       }
+        public MyFileService(IZDKResourceFileManager resourceManager)
+        {
+            _resourceManager = resourceManager;
+        }
 
-       public string? ReadConfigFile()
-       {
-           IZDKResourceFile? configFile = _resourceManager.GetFile("config.json");
-           if (configFile != null)
-           {
-               using (var stream = configFile.GetStream())
-               using (var reader = new StreamReader(stream))
-               {
-                   return reader.ReadToEnd();
-               }
-           }
-           return null;
-       }
-   }
-   ```
+        public string? ReadConfigFile()
+        {
+            IZDKResourceFile? configFile = _resourceManager.GetFile("config.json");
+            if (configFile != null)
+            {
+                using (var stream = configFile.GetStream())
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+            return null;
+        }
+    }
+    ```
 
 ## Configuration Options
 
 Detailed configuration options are available for each provider. Please refer to the specific configuration classes:
 
-* `ZDKCsvLocalizationConfiguration`
-* `ZDKFileSystemResourceConfiguration`
+*   `ZDKFileSystemResourceConfiguration`
 
 ## Extending the System
 
@@ -233,36 +134,54 @@ Detailed configuration options are available for each provider. Please refer to 
 
 To support other data sources (e.g., databases, cloud storage):
 
-1. Implement the relevant interfaces from `ZDK.Localization.Abstractions` or `ZDK.ResourceManager.Abstractions` (e.g.,
-   `IZDKLocalizationProvider`, `IZDKResourceFileProvider`).
-2. Create a corresponding configuration class if specific settings are needed.
-3. Create DI extension methods for easy registration of your custom provider.
+1.  Implement the relevant interfaces from `ZDK.ResourceManager.Abstractions` (e.g.,
+    `IZDKResourceFileProvider`).
+2.  Create a corresponding configuration class if specific settings are needed.
+3.  Create DI extension methods for easy registration of your custom provider.
 
 ## Contributing
 
 Contributions are welcome! If you'd like to contribute, please follow these steps:
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature-name`).
-3. Make your changes.
-4. Commit your changes (`git commit -m 'Add some feature'`).
-5. Push to the branch (`git push origin feature/your-feature-name`).
-6. Open a pull request.
+1.  Fork the repository.
+2.  Create a new branch (`git checkout -b feature/your-feature-name`).
+3.  Make your changes.
+4.  Commit your changes (`git commit -m 'Add some feature'`).
+5.  Push to the branch (`git push origin feature/your-feature-name`).
+6.  Open a pull request.
 
 Please make sure to update tests as appropriate.
 
 ## Building the Project
 
-WIP
+This project targets .NET 9. To build the solution, ensure you have the .NET 9 SDK installed on your machine.
 
+1.  **Clone the repository:**
+```bash
+    git clone https://github.com/bberka/ZDK.ResourceManager
+    cd ZDK.ResourceManager
+```
+
+2.  **Restore dependencies:**
+```bash
+    dotnet restore
+```
+
+3**Build the solution:**
+```bash
+    dotnet build
+```
+
+You can also open the `.sln` file in Visual Studio 2022 (with .NET 9 SDK installed) and build from there.
 ## Running Tests
 
-WIP
+Due to early development, tests are not yet implemented. Once the project stabilizes, unit tests will be added to ensure reliability and correctness.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgements
+## About ZDK.Localization package
+ZDK.Localization project is removed from this repository. It is mosty likely won't be reintroduced in the future. 
 
-* [CsvHelper](https://joshclose.github.io/CsvHelper/) - For CSV parsing.
+You either have to write your own localization provider or use existing ones like `Microsoft.Extensions.Localization` or `Localization.AspNetCore` packages and import files from this project as needed.

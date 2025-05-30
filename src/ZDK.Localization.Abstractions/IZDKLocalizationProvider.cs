@@ -1,3 +1,6 @@
+using System.Collections.Immutable;
+using ZDK.ResourceManager.Abstractions;
+
 namespace ZDK.Localization.Abstractions;
 
 /// <summary>
@@ -9,5 +12,5 @@ public interface IZDKLocalizationProvider
 	///  Loads the localization resources from the specified source.
 	/// </summary>
 	/// <returns></returns>
-	IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> LoadLocalizationData();
+	IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> LoadLocalizationData(IImmutableSet<IZDKResourceFile> resourceFiles);
 }

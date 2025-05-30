@@ -38,8 +38,19 @@ public interface IZDKResourceFile
 	/// <exception cref="ResourceFileAccessException">Thrown if there's an error accessing the resource content.</exception> // Custom exception for access issues
 	Stream GetStream();
 
-	// Consider adding:
-	// long Size { get; } // File size
-	// DateTimeOffset LastModified { get; } // Last modified timestamp
-	// IReadOnlyDictionary<string, string> Metadata { get; } // Provider-specific metadata
+
+	/// <summary>
+	///  Gets the size of the resource file in bytes.
+	/// </summary>
+	long Size { get; }
+
+	/// <summary>
+	///  Gets the last modified date and time of the resource file.
+	/// </summary>
+	DateTimeOffset LastModified { get; }
+	
+	/// <summary>
+	///  Gets the metadata associated with the resource file.
+	/// </summary>
+	IReadOnlyDictionary<string, string?> Metadata { get; }
 }

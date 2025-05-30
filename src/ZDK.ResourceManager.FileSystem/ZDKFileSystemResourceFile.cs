@@ -11,8 +11,11 @@ public sealed class ZDKFileSystemResourceFile : IZDKResourceFile
 	public string FileName { get; }
 	public string FileExtension { get; }
 	public string FileNameWithoutExtension { get; }
-
-	public ZDKFileSystemResourceFile(string filePath) {
+	public long Size { get; }
+	public DateTimeOffset LastModified { get; }
+	public IReadOnlyDictionary<string, string?> Metadata { get; }
+	
+	public ZDKFileSystemResourceFile(string filePath, long size, DateTimeOffset lastModified, IReadOnlyDictionary<string, string?> metadata) {
 		if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("File path cannot be null or whitespace.", nameof(filePath));
 
 		if (!File.Exists(filePath)) {
@@ -20,6 +23,9 @@ public sealed class ZDKFileSystemResourceFile : IZDKResourceFile
 		}
 
 		FileUri = filePath;
+		Size = size;
+		LastModified = lastModified;
+		Metadata = metadata;
 		FileName = Path.GetFileName(filePath);
 		FileExtension = Path.GetExtension(filePath);
 		FileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);

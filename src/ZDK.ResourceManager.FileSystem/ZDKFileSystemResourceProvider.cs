@@ -48,7 +48,17 @@ public class ZDKFileSystemResourceProvider : IZDKResourceFileProvider
 			foreach (var file in allFiles) {
 				var fileInfo = new FileInfo(file);
 				if (fileInfo.Length != 0)
-					resourceFiles.Add(new ZDKFileSystemResourceFile(file));
+					resourceFiles.Add(new ZDKFileSystemResourceFile(file,
+					                                                fileInfo.Length,
+					                                                fileInfo.LastWriteTimeUtc,
+					                                                new Dictionary<string, string?> {
+						                                                { "IsReadOnly", fileInfo.IsReadOnly.ToString() },
+						                                                { "CreationTime", fileInfo.CreationTimeUtc.ToString("O") },
+						                                                { "LastAccessTime", fileInfo.LastAccessTimeUtc.ToString("O") },
+						                                                { "Attributes", fileInfo.Attributes.ToString() },
+						                                                { "DirectoryName", fileInfo.DirectoryName },
+						                                                { "UnixFileMode", fileInfo.UnixFileMode.ToString() },
+					                                                }));
 			}
 		}
 		catch (Exception ex) {

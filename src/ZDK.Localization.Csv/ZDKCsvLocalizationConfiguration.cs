@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 using ZDK.Localization.Abstractions;
 
 namespace ZDK.Localization.Csv;
@@ -29,6 +30,11 @@ public class ZDKCsvLocalizationConfiguration : IZDKLocalizationConfiguration
 	public ZDKMissingLocalizationKeyHandleMethod MissingLocalizationKeyHandleMethod { get; init; } = ZDKMissingLocalizationKeyHandleMethod.ReturnKey;
 
 	/// <summary>
+	///  Specifies the encoding used to read the CSV file. Default is UTF-8.
+	/// </summary>
+	public Encoding Encoding { get; } = Encoding.UTF8;
+
+	/// <summary>
 	/// Reloads the localization data when the file changes. Default is true.
 	/// </summary>
 	public bool ReloadOnFileChange { get; init; } = true;
@@ -43,4 +49,18 @@ public class ZDKCsvLocalizationConfiguration : IZDKLocalizationConfiguration
 	/// Common values are ',' and ';' and '\t'. Default is ','.
 	/// </summary>
 	public char Separator { get; init; } = ',';
+
+
+	/// <summary>
+	///  Specifies the name of the column that contains the localization keys in the CSV file. Default is "Key".
+	/// </summary>
+	public string KeyColumnName { get; init; } = "Key";
+
+	internal void Validate() {
+		if (string.IsNullOrWhiteSpace(SourcePath))
+			throw new ArgumentException("SourcePath cannot be empty.", nameof(SourcePath));
+
+		if (string.IsNullOrWhiteSpace(KeyColumnName))
+			throw new ArgumentException("KeyColumnName cannot be empty.", nameof(KeyColumnName));
+	}
 }

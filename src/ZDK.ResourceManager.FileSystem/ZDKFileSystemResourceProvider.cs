@@ -48,7 +48,7 @@ public class ZDKFileSystemResourceProvider : IZDKResourceFileProvider
 			foreach (var file in allFiles) {
 				var fileInfo = new FileInfo(file);
 				if (fileInfo.Length != 0)
-					resourceFiles.Add(new ZDKFileSystemResourceFile(file));
+					resourceFiles.Add(new ZDKFileSystemResourceFile(file,source));
 			}
 		}
 		catch (Exception ex) {

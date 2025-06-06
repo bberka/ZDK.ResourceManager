@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <Title>ZDK.ResourceManager.Ftp</Title>
+        <Description>Provides a Ftp-based resource manager for ZDK.ResourceManager.</Description>
+        <RepositoryUrl>https://github.com/bberka/ZDK.ResourceManager/</RepositoryUrl>
+        <Authors>bberka</Authors>
+        <Company>ZDK</Company>
+        <PackageTags>zdk, resource, manager, resources, file, ftp</PackageTags>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+        <WarningsAsErrors>true</WarningsAsErrors>
+        <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
+        <MSBuildWarningsAsErrors>true</MSBuildWarningsAsErrors>
+        
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ZDK.ResourceManager.Abstractions\ZDK.ResourceManager.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentFTP" Version="52.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\..\LICENSE" Pack="true" PackagePath="\">
+            <Link>LICENSE</Link>
+        </Content>
+        <Content Include="..\..\README.md" Pack="true" PackagePath="\">
+            <Link>README.md</Link>
+        </Content>
+    </ItemGroup>
+</Project>

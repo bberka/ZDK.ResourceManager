@@ -15,11 +15,9 @@ public static class ZDKFileSystemResourceExtensions
 	public static IServiceCollection AddZDKFileSystemResourceManager(
 		this IServiceCollection services,
 		ZDKFileSystemResourceConfiguration configuration) {
-		if (configuration == null) {
-			throw new ArgumentNullException(nameof(configuration));
-		}
+        ArgumentNullException.ThrowIfNull(configuration);
 
-		services.AddSingleton(configuration);
+        services.AddSingleton(configuration);
 		services.AddSingleton<IZDKResourceConfiguration>(configuration);
 
 		services.AddSingleton<IZDKResourceFileProvider, ZDKFileSystemResourceProvider>();
@@ -44,15 +42,11 @@ public static class ZDKFileSystemResourceExtensions
 		this IServiceCollection services,
 		object key,
 		ZDKFileSystemResourceConfiguration configuration) {
-		if (key == null) {
-			throw new ArgumentNullException(nameof(key));
-		}
+        ArgumentNullException.ThrowIfNull(key);
 
-		if (configuration == null) {
-			throw new ArgumentNullException(nameof(configuration));
-		}
+        ArgumentNullException.ThrowIfNull(configuration);
 
-		services.AddKeyedSingleton(key, configuration);
+        services.AddKeyedSingleton(key, configuration);
 		services.AddKeyedSingleton<IZDKResourceConfiguration>(key);
 
 		services.AddKeyedSingleton<IZDKResourceFileProvider, ZDKFileSystemResourceProvider>(key);

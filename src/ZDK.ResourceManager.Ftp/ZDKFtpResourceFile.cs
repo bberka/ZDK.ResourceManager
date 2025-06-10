@@ -14,6 +14,7 @@ public sealed record ZDKFtpResourceFile : IZDKResourceFile
 	public string FileName { get; } // This should be the relative path from the FtpRootDirectory
 	public string FileExtension { get; }
 	public string FileNameWithoutExtension { get; }
+	public string? DirectoryName { get; set; }
 
 	// Constructor to create an instance with a factory for getting the stream
 	public ZDKFtpResourceFile(string ftpFullUri, string relativeFilePath, Func<Stream> streamFactory) {
@@ -28,6 +29,7 @@ public sealed record ZDKFtpResourceFile : IZDKResourceFile
 		FileExtension = Path.GetExtension(relativeFilePath);
 		FileNameWithoutExtension = Path.GetFileNameWithoutExtension(relativeFilePath);
 		_streamFactory = streamFactory;
+		DirectoryName = Path.GetDirectoryName(relativeFilePath)?.Replace('\\', '/'); // Ensure Unix-style path
 	}
 
 	/// <summary>
@@ -44,6 +46,7 @@ public sealed record ZDKFtpResourceFile : IZDKResourceFile
 			throw new ResourceFileAccessException($"Error accessing file stream for '{FileUri}' from FTP.", ex);
 		}
 	}
+
 
 	public string GetContentAsString() {
 		using var stream = GetStream();

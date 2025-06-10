@@ -11,6 +11,7 @@ public sealed record ZDKFileSystemResourceFile : IZDKResourceFile
 	public string FileName { get; }
 	public string FileExtension { get; }
 	public string FileNameWithoutExtension { get; }
+	public string? DirectoryName { get; set; }
 
 	public ZDKFileSystemResourceFile(string filePath, string? basePath = null) {
 		if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("File path cannot be null or whitespace.", nameof(filePath));
@@ -25,6 +26,7 @@ public sealed record ZDKFileSystemResourceFile : IZDKResourceFile
 			: Path.GetRelativePath(basePath, filePath);
 		FileExtension = Path.GetExtension(filePath);
 		FileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+		DirectoryName = Path.GetDirectoryName(filePath);
 	}
 
 	/// <summary>
@@ -52,6 +54,7 @@ public sealed record ZDKFileSystemResourceFile : IZDKResourceFile
 			throw new ResourceFileAccessException($"An unexpected error occurred while accessing file stream for '{FileUri}'.", ex);
 		}
 	}
+
 
 	public string GetContentAsString() {
 		using var stream = GetStream();

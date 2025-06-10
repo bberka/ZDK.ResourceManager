@@ -38,12 +38,14 @@ public interface IZDKResourceFile
 	/// <exception cref="ResourceFileAccessException">Thrown if there's an error accessing the resource content.</exception> // Custom exception for access issues
 	Stream GetStream();
 	
+	
+	/// <summary>
+	/// Directory name if applicable, representing the folder containing the resource file.
+	/// </summary>
+	public string? DirectoryName { get; set; }
+	
 	string GetContentAsString(); // Optional: Get the content as a string, useful for text files
 	
 	string[] GetContentAsLines(); // Optional: Get the content as an array of lines, useful for text files
 
-	// Consider adding:
-	// long Size { get; } // File size
-	// DateTimeOffset LastModified { get; } // Last modified timestamp
-	// IReadOnlyDictionary<string, string> Metadata { get; } // Provider-specific metadata
 }
